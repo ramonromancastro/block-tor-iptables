@@ -43,7 +43,7 @@ fi
 # Creamos el agrupamiento en las tablas de iptables
 
 if ! iptables -L $IPTABLES_CHAINNAME -n >/dev/null 2>&1 ; then 
-  iptables -N $IPTABLES_CHAINNAME >/dev/null 2>&1
+    iptables -N $IPTABLES_CHAINNAME >/dev/null 2>&1
 fi
 
 # Descargamos la lista de nodos de TOR
