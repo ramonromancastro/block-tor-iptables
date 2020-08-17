@@ -42,8 +42,8 @@ fi
 
 # Creamos el agrupamiento en las tablas de iptables
 
-if ! iptables -L $IPTABLES_CHAINNAME -n >/dev/null 2>&1 ; then 
-    iptables -N $IPTABLES_CHAINNAME >/dev/null 2>&1
+if ! /usr/sbin/iptables -L $IPTABLES_CHAINNAME -n >/dev/null 2>&1 ; then 
+    /usr/sbin/iptables -N $IPTABLES_CHAINNAME >/dev/null 2>&1
 fi
 
 # Descargamos la lista de nodos de TOR
@@ -61,17 +61,17 @@ sed -i 's|^#.*$||g' $IPTABLES_TOR_NODES
 
 # Eliminamos los filtros actuales del agrupamiento
 
-iptables -F $IPTABLES_CHAINNAME
+/usr/sbin/iptables -F $IPTABLES_CHAINNAME
 
 # Establecemos los filtros
 
 for IP in $(cat $IPTABLES_TOR_NODES | uniq | sort); do
 	if [[ $IP =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
 		echo -n '.'
-		iptables -A $IPTABLES_CHAINNAME -s $IP -j $IPTABLES_TARGET
+		/usr/sbin/iptables -A $IPTABLES_CHAINNAME -s $IP -j $IPTABLES_TARGET
 	fi
 done
 
 # Guardamos una copia en el log para tenerlo registrado
 
-iptables-save > $IPTABLES_TOR_LOGS
+/usr/sbin/iptables-save > $IPTABLES_TOR_LOGS
